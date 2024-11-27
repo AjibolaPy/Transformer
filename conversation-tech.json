@@ -1,0 +1,181 @@
+{
+  "conversations": [
+    {
+      "conversation_id": 1,
+      "messages": [
+        { "sender": "Ben", "message": "Hey Alex! Got a sec? I'm losing it over this code, man. 😅" },
+        { "sender": "Alex", "message": "Haha, what's up? Tell me what’s driving you crazy. 🧐" },
+        { "sender": "Ben", "message": "Trying to get this function to loop through an array, but it’s just... not working. It’s ignoring my for-loop. 😩" },
+        { "sender": "Alex", "message": "Haha, I feel your pain, dude. Lemme see the code. Maybe a second set of eyes will help." },
+        { "sender": "Ben", "message": "Sending it over now... Here!" },
+        { "sender": "Alex", "message": "Alright, let’s see… Ah, I see it! You’re missing `i++` at the end of the for-loop, so it’s stuck in an infinite loop. 😆" },
+        { "sender": "Ben", "message": "Oh nooo! I totally missed that! 🤦‍♂️ Thanks for catching it!" },
+        { "sender": "Alex", "message": "Haha, no worries! Been there before. Try adding that, and it should work. Let me know!" }
+      ]
+    },
+    {
+      "conversation_id": 2,
+      "messages": [
+        { "sender": "Ben", "message": "Yo, it worked! 🎉 I feel like a genius now. 😂 Thanks, bro!" },
+        { "sender": "Alex", "message": "Haha, all you! But, seriously, glad it worked out. Anything else giving you trouble?" },
+        { "sender": "Ben", "message": "Now that you mention it… there’s this error popping up, 'undefined variable'… but I KNOW I defined it! 😤" },
+        { "sender": "Alex", "message": "That’s the worst! Let’s double-check, though. Maybe it’s a tiny typo?" },
+        { "sender": "Ben", "message": "Man, you’re probably right… Let me look… YUP. Totally spelled it wrong. 😅" },
+        { "sender": "Alex", "message": "Haha, classic! Typos are like sneaky little ninjas. 😂" },
+        { "sender": "Ben", "message": "True that! Thanks for saving me twice today. You’re a legend!" },
+        { "sender": "Alex", "message": "Anytime, buddy! 👊" }
+      ]
+    },
+    {
+      "conversation_id": 3,
+      "messages": [
+        { "sender": "Ben", "message": "Ohhh, question! How do you feel about APIs?" },
+        { "sender": "Alex", "message": "Haha, you’re going for the big guns now, huh? What’s up with APIs?" },
+        { "sender": "Ben", "message": "I have to connect to this weather API, but it keeps throwing 404 errors. Any idea why? 🤔" },
+        { "sender": "Alex", "message": "404 means 'not found.' Could be the endpoint you’re calling is wrong. Wanna show me the URL you’re using?" },
+        { "sender": "Ben", "message": "Yeah, here: *{Shares API URL}*" },
+        { "sender": "Alex", "message": "Let’s see… Ah, you’re missing `/weather` at the end! That’s why. 😉" },
+        { "sender": "Ben", "message": "You’re literally a lifesaver! How do you know all this??" },
+        { "sender": "Alex", "message": "Haha, just a lot of trial and error, my friend. 😎" }
+      ]
+    },
+    {
+      "conversation_id": 4,
+      "messages": [
+        { "sender": "Ben", "message": "Quick one, Alex! Ever used CSS grids?" },
+        { "sender": "Alex", "message": "Yup! CSS grids are awesome for layout stuff. What’s the issue?" },
+        { "sender": "Ben", "message": "I’m trying to make a two-column layout, but they keep stacking on top of each other. 😩" },
+        { "sender": "Alex", "message": "Sounds like the grid container isn’t set right. Did you set `display: grid` on the parent?" },
+        { "sender": "Ben", "message": "Oh… I think I missed that. Let me try. 🙈" },
+        { "sender": "Alex", "message": "Haha, it happens! Let me know if that fixes it." },
+        { "sender": "Ben", "message": "YES! It works! Dude, you’re magic. 🙌" },
+        { "sender": "Alex", "message": "Haha, all part of the process. Glad it’s sorted!" }
+      ]
+    },
+    {
+      "conversation_id": 5,
+      "messages": [
+        { "sender": "Ben", "message": "Hey man, can you recommend any resources for learning Python?" },
+        { "sender": "Alex", "message": "Of course! I’d start with Codecademy or freeCodeCamp, both have solid Python courses." },
+        { "sender": "Ben", "message": "Sweet! Anything specific to look out for?" },
+        { "sender": "Alex", "message": "Hmm, maybe focus on functions and data structures early on. Those are super helpful!" },
+        { "sender": "Ben", "message": "Noted! Thanks, dude. I’ll check them out." },
+        { "sender": "Alex", "message": "Anytime! Let me know if you hit any roadblocks." }
+      ]
+    },
+    {
+      "conversation_id": 6,
+      "messages": [
+        { "sender": "Ben", "message": "Yo Alex! Can you help with Git? My repo’s a mess. 😬" },
+        { "sender": "Alex", "message": "Haha, welcome to the club! What’s up with it?" },
+        { "sender": "Ben", "message": "Got a ton of branches, and I have no clue which ones I still need. 😅" },
+        { "sender": "Alex", "message": "Been there! Try running `git branch -d <branch-name>` to delete the ones you don’t need. Just be careful!" },
+        { "sender": "Ben", "message": "Thanks! I'll give it a go. 🙏" },
+        { "sender": "Alex", "message": "No problem! Let me know if it works." }
+      ]
+    },
+    {
+      "conversation_id": 7,
+      "messages": [
+        { "sender": "Ben", "message": "Alex, random question, but how do you stay motivated with all this coding stuff?" },
+        { "sender": "Alex", "message": "Haha, good question. I think for me, it’s all about small wins. Solving stuff feels like leveling up!" },
+        { "sender": "Ben", "message": "That’s true! When I finally fix a bug, it feels awesome." },
+        { "sender": "Alex", "message": "Exactly! Plus, breaks are essential. Go for a walk or do something fun when you hit a wall." },
+        { "sender": "Ben", "message": "Good call. Appreciate the pep talk, man!" },
+        { "sender": "Alex", "message": "Anytime, dude! We got this! 💪" }
+      ]
+    },
+    {
+      "conversation_id": 8,
+      "messages": [
+        { "sender": "Ben", "message": "Hey Alex, is JSON always this annoying? 😆" },
+        { "sender": "Alex", "message": "Haha, welcome to data formatting hell! What’s the problem?" },
+        { "sender": "Ben", "message": "Just nesting all these objects is making my brain hurt. 😅" },
+        { "sender": "Alex", "message": "Yeah, it can be a lot! Sometimes taking a step back helps, or use an online formatter to make it pretty." },
+        { "sender": "Ben", "message": "Good idea! Might just save my sanity." },
+        { "sender": "Alex", "message": "Haha, happy formatting! 😉" }
+      ]
+    },
+    {
+      "conversation_id": 9,
+      "messages": [
+        { "sender": "Ben", "message": "Bro, question about web development! Do I need to know JavaScript frameworks?" },
+        { "sender": "Alex", "message": "If you’re serious about web dev, yeah, for sure. Start with React, it’s pretty popular." },
+        { "sender": "Ben", "message": "Alright, adding it to the list! Thanks for the advice." },
+        { "sender": "Alex", "message": "No problem, man! You’ll be building apps in no time. 💻" }
+      ]
+    },
+    {
+      "conversation_id": 10,
+      "messages": [
+        { "sender": "Ben", "message": "Alex, quick! My console is throwing a CORS error! 😭" },
+        { "sender": "Alex", "message": "Ahh, the dreaded CORS issue! You’re probably missing an HTTP header." },
+        { "sender": "Ben", "message": "What header do I need?" },
+        { "sender": "Alex", "message": "`Access-Control-Allow-Origin: *` usually helps, but be careful with security!" },
+        { "sender": "Ben", "message": "Got it! Thanks for the save!" },
+        { "sender": "Alex", "message": "Always happy to help, dude! Good luck with the code. 😄" }
+      ]
+    },
+    {
+      "conversation_id": 15,
+      "messages": [
+        { "sender": "Alex", "message": "Guess what! I started working out again." },
+        { "sender": "Ben", "message": "Wait, you? Working out? Is this a joke? 😂" },
+        { "sender": "Alex", "message": "Wow, rude! Yes, I’m serious. Trying to get those gains, you know?" },
+        { "sender": "Ben", "message": "Alright, alright. Just making sure the apocalypse isn’t coming. So, did you lift an actual weight?" },
+        { "sender": "Alex", "message": "Excuse you, I lifted MANY weights, thank you very much." },
+        { "sender": "Ben", "message": "Nice, maybe by next year you’ll have arms like a baby chicken. 😂" },
+        { "sender": "Alex", "message": "Haha, give it time. Soon, I’ll be out here flexing on you, noodle arms." },
+        { "sender": "Ben", "message": "I’ll believe it when I see it, bro. 😂💪" }
+      ]
+    },
+    {
+      "conversation_id": 14,
+      "messages": [
+        { "sender": "Ben", "message": "Hey! Got any movie recs? Feel like watching something epic." },
+        { "sender": "Alex", "message": "Hmm… how about that new superhero movie? Heard it’s all explosions and plot twists." },
+        { "sender": "Ben", "message": "Nice! But you know me, I need something with less thinking involved. Brain is off-duty." },
+        { "sender": "Alex", "message": "Haha, okay, so… cartoons it is. Gotta keep it simple for you." },
+        { "sender": "Ben", "message": "Wow, rude. But yes, cartoons sound good. Throw in a Pixar movie and I’m set. 😂" },
+        { "sender": "Alex", "message": "Easy crowd to please! If it has talking animals, you’re there." },
+        { "sender": "Ben", "message": "Hey, they speak to my soul, alright? 😂" }
+      ]
+    },
+    {
+      "conversation_id": 13,
+      "messages": [
+        { "sender": "Ben", "message": "So I tried cooking last night…" },
+        { "sender": "Alex", "message": "Oh no, let me guess… you set off the smoke alarm?" },
+        { "sender": "Ben", "message": "Rude! But yes. Kitchen was practically on fire, man. 😂" },
+        { "sender": "Alex", "message": "Look at you, trying to burn the house down with your 'culinary skills.' Gordon Ramsay would cry." },
+        { "sender": "Ben", "message": "Hey, I’ll have you know that my pasta… sort of… resembled food in the end." },
+        { "sender": "Alex", "message": "‘Sort of resembled food’ is a strong review. Michelin stars are quaking." },
+        { "sender": "Ben", "message": "Laugh all you want, but one day I’ll be a master chef! Or at least a chef… maybe just someone who can cook." },
+        { "sender": "Alex", "message": "Sure thing, buddy. Just keep the fire extinguisher nearby." }
+      ]
+    },
+    {
+      "conversation_id": 12,
+      "messages": [
+        { "sender": "Alex", "message": "Did you hear about the new AI thing everyone’s talking about?" },
+        { "sender": "Ben", "message": "Oh yeah, the AI that’ll supposedly take over the world? Guess it's about to replace you in my life, huh? 😂" },
+        { "sender": "Alex", "message": "Pfft, no AI could handle your weirdness, bro." },
+        { "sender": "Ben", "message": "Touché. But hey, if it can remember my coffee order, I might give it a shot. 😜" },
+        { "sender": "Alex", "message": "That’d be the only friend you wouldn’t roast daily. 🤖☕" },
+        { "sender": "Ben", "message": "Please, I’d roast a robot just as much. AI’s gotta learn somehow!" }
+      ]
+    },
+    {
+      "conversation_id": 11,
+      "messages": [
+        { "sender": "Ben", "message": "Yo, Alex! Got any plans this weekend or you just gonna be a couch potato as usual? 😂" },
+        { "sender": "Alex", "message": "Excuse me, I prefer the term 'horizontal enthusiast.' And yes, I’m probably binge-watching shows." },
+        { "sender": "Ben", "message": "Ahh, classic. I swear Netflix sends you a ‘Thank you’ card every month." },
+        { "sender": "Alex", "message": "They really should! Keeping their view count up single-handedly. What about you?" },
+        { "sender": "Ben", "message": "Might go hiking. Trying to be ‘outdoorsy’ and all that. Gotta convince people I’m not just a WiFi-dependent lifeform." },
+        { "sender": "Alex", "message": "Haha, let’s be real, you’d take your router up that mountain if you could." },
+        { "sender": "Ben", "message": "True, I’d need it for emergency memes. 📱😂" }
+      ]
+    },
+  ]
+}

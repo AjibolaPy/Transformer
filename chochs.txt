@@ -1,0 +1,360 @@
+//+------------------------------------------------------------------+
+//|                                               BoS CHoCH Fola.mq5 |
+//|                                          Copyright 2024, Usiola. |
+//|                                   https://www.trenddaytrader.com |
+//+------------------------------------------------------------------+
+
+//NOTE TO DEVELOPER
+// I have edited the code and added some array functions to handle all of the data you wanted to collect. This is a working version of the BoS CHoCH scanner. Goodluck. ~BobJay
+
+#property copyright "Copyright 2024, Usiola."
+#property link      "https://www.trenddaytrader.com"
+#property version   "1.00"
+
+int barsTotal;
+
+//M5 BoS
+double highs[];
+double lows[];
+
+int lastSwingDirection = 0;
+
+int lastDirection = 0;
+datetime lastTimeH = 0;
+datetime lastTimeL = 0;
+datetime prevTimeH = 0;
+datetime prevTimeL = 0;
+
+datetime Bullish_BoS_times[];
+datetime Bearish_BoS_times[];
+datetime Bullish_CHoCH_times[];
+datetime Bearish_CHoCH_times[];
+
+//+------------------------------------------------------------------+
+//| Expert initialization function                                   |
+//+------------------------------------------------------------------+
+int OnInit()
+  {
+
+   ArraySetAsSeries(highs, true);
+   ArraySetAsSeries(lows, true);
+   ArraySetAsSeries(Bullish_BoS_times, true);
+   ArraySetAsSeries(Bearish_BoS_times, true);
+   ArraySetAsSeries(Bullish_CHoCH_times, true);
+   ArraySetAsSeries(Bearish_CHoCH_times, true);
+
+
+   return(INIT_SUCCEEDED);
+  }
+//+------------------------------------------------------------------+
+//| Expert deinitialization function                                 |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason)
+  {
+//---
+
+  }
+
+
+//+------------------------------------------------------------------+
+//| Function to draw order block                                      |
+//+------------------------------------------------------------------+
+void DrawOrderBlock(datetime time, double price, int direction)
+  {
+   string objName = "OrderBlock_" + TimeToString(time);
+   if (ObjectFind(0, objName) < 0)
+     {
+      double endPrice = price;
+      if (direction > 0) // Bullish
+        endPrice += 10 * _Point; // Adjust this value based on the desired block height
+      else if (direction < 0) // Bearish
+        endPrice -= 10 * _Point; // Adjust this value based on the desired block height
+
+      // Draw the order block as a rectangle
+      if (ObjectCreate(0, objName, OBJ_RECTANGLE, 0, time, price, TimeCurrent(), endPrice))
+        {
+         ObjectSetInteger(0, objName, OBJPROP_COLOR, clrYellow);
+         ObjectSetInteger(0, objName, OBJPROP_WIDTH, 2);
+         ObjectSetInteger(0, objName, OBJPROP_STYLE, STYLE_SOLID);
+         ObjectSetInteger(0, objName, OBJPROP_BACK, true); // Draw it in the background
+        }
+     }
+  }
+
+
+//+------------------------------------------------------------------+
+//| Expert tick function                                             |
+//+------------------------------------------------------------------+
+void OnTick()
+  {
+
+   int bars = iBars(_Symbol, PERIOD_CURRENT);
+
+   if(barsTotal != bars)
+     {
+      barsTotal = bars;
+
+      int BosCHoCH = BosCHoCH();
+
+
+     }
+  }
+//+------------------------------------------------------------------+
+//+------------------------------------------------------------------+
+
+// Function to handle highs and lows
+int BosCHoCH()
+  {
+   MqlRates rates[];
+   ArraySetAsSeries(rates, true);
+   int copied = CopyRates(_Symbol, PERIOD_CURRENT, 0, 1000, rates);
+
+   int indexLastH = iBarShift(_Symbol, PERIOD_CURRENT, lastTimeH);
+   int indexLastL = iBarShift(_Symbol, PERIOD_CURRENT, lastTimeL);
+   int indexPrevH = iBarShift(_Symbol, PERIOD_CURRENT, prevTimeH);
+   int indexPrevL = iBarShift(_Symbol, PERIOD_CURRENT, prevTimeL);
+
+//Print(indexLastH);
+
+//Break Of Structure
+   if(indexLastH > 0 && indexLastL > 0 && indexPrevH > 0 && indexPrevL > 0 &&
+      indexLastH < ArraySize(rates) && indexPrevH < ArraySize(rates) &&
+      indexLastL < ArraySize(rates) && indexPrevL < ArraySize(rates))
+     {
+      //BULLISH
+      if(rates[indexLastH].high > rates[indexPrevH].high && rates[indexLastL].low > rates[indexPrevL].low)
+        {
+         if(rates[2].close < rates[indexLastH].high &&
+            rates[1].close > rates[indexLastH].high)
+           {
+            // Shift existing elements in Bullish_BoS_times[] to make space for the new value
+            ArrayResize(Bullish_BoS_times, MathMin(ArraySize(Bullish_BoS_times) + 1, 10));
+
+            for(int i = ArraySize(Bullish_BoS_times) - 1; i > 0; --i)
+              {
+               Bullish_BoS_times[i] = Bullish_BoS_times[i - 1];
+              }
+
+            // Store time value in Bullish_BoS_timesM5[0], the first position
+            Bullish_BoS_times[0] = rates[1].time;
+
+            string objName = " SMC BoS "+TimeToString(rates[indexLastH].time);
+            if(ObjectFind(0, objName) < 0)
+               ObjectCreate(0, objName, OBJ_TREND, 0, rates[indexLastH].time, rates[indexLastH].high, rates[1].time, rates[indexLastH].high);
+            //--- set line color
+            ObjectSetInteger(0, objName, OBJPROP_COLOR, clrBlue);
+
+            lastDirection = 1;
+
+            createObj(rates[indexLastH].time, rates[indexLastH].high, 0, 1, clrBlue, "BoS");
+            return 1;
+
+           }
+        }
+      //BEARISH
+      if(rates[indexLastH].high < rates[indexPrevH].high && rates[indexLastL].low < rates[indexPrevL].low)
+        {
+         if(rates[2].close > rates[indexLastL].low &&
+            rates[1].close < rates[indexLastL].low)
+           {
+            string objName = " SMC BoS "+TimeToString(rates[indexLastL].time);
+            if(ObjectFind(0, objName) < 0)
+               ObjectCreate(0, objName, OBJ_TREND, 0, rates[indexLastL].time, rates[indexLastL].low, rates[1].time, rates[indexLastL].low);
+            //--- set line color
+            ObjectSetInteger(0, objName, OBJPROP_COLOR, clrRed);
+
+            // Shift existing elements in Bearish_BoS_times[] to make space for the new value
+            ArrayResize(Bearish_BoS_times, MathMin(ArraySize(Bearish_BoS_times) + 1, 10));
+
+            for(int i = ArraySize(Bearish_BoS_times) - 1; i > 0; --i)
+              {
+               Bearish_BoS_times[i] = Bearish_BoS_times[i - 1];
+              }
+
+            // Store time value in Bearish_BoS_times[0], the first position
+            Bearish_BoS_times[0] = rates[1].time;
+
+            lastDirection = -1;
+
+            createObj(rates[indexLastL].time, rates[indexLastL].low, 0, -1, clrRed, "BoS");
+            return -1;
+
+           }
+        }
+     }
+
+
+//Change Of Character
+   if(indexLastH > 0 && indexLastL > 0 && indexPrevH > 0 && indexPrevL > 0 &&
+      indexLastH < ArraySize(rates) && indexPrevH < ArraySize(rates) &&
+      indexLastL < ArraySize(rates) && indexPrevL < ArraySize(rates))
+     {
+
+      //Bullish
+      if(rates[indexLastH].high < rates[indexPrevH].high && rates[indexLastL].low < rates[indexPrevL].low)
+        {
+         if(rates[2].close < rates[indexLastH].high &&
+            rates[1].close > rates[indexLastH].high)
+           {
+            string objName = " SMC CHoCH "+TimeToString(rates[indexLastH].time);
+	    DrawOrderBlock(lastTimeH, highs[0], 1);
+            if(ObjectFind(0, objName) < 0)
+               ObjectCreate(0, objName, OBJ_TREND, 0, rates[indexLastH].time, rates[indexLastH].high, rates[1].time, rates[indexLastH].high);
+            //--- set line color
+            ObjectSetInteger(0, objName, OBJPROP_COLOR, clrBlue);
+
+            // Shift existing elements in Bullish_CHoCH_times5[] to make space for the new value
+            ArrayResize(Bullish_CHoCH_times, MathMin(ArraySize(Bullish_CHoCH_times) + 1, 10));
+
+            for(int i = ArraySize(Bullish_CHoCH_times) - 1; i > 0; --i)
+              {
+               Bullish_CHoCH_times[i] = Bullish_CHoCH_times[i - 1];
+              }
+
+            // Store time value in Bullish_CHoCH_timesM5[0], the first position
+            Bullish_CHoCH_times[0] = rates[1].time;
+
+            lastDirection = 2;
+
+            createObj(rates[indexLastH].time, rates[indexLastH].high, 0, 1, clrBlue, "CHoCH");
+            return 2;
+
+
+           }
+        }
+
+      //Bearish
+      if(rates[indexLastH].high > rates[indexPrevH].high && rates[indexLastL].low > rates[indexPrevL].low)
+        {
+         if(rates[2].close > rates[indexLastL].low &&
+            rates[1].close < rates[indexLastL].low)
+           {
+	    DrawOrderBlock(lastTimeL, lows[0], -1);
+            string objName = " SMC CHoCH "+TimeToString(rates[indexLastL].time);
+            if(ObjectFind(0, objName) < 0)
+               ObjectCreate(0, objName, OBJ_TREND, 0, rates[indexLastL].time, rates[indexLastL].low, rates[1].time, rates[indexLastL].low);
+            //--- set line color
+            ObjectSetInteger(0, objName, OBJPROP_COLOR, clrRed);
+
+            // Shift existing elements in Bearish_CHoCH_times[] to make space for the new value
+            ArrayResize(Bearish_CHoCH_times, MathMin(ArraySize(Bearish_CHoCH_times) + 1, 10));
+
+            for(int i = ArraySize(Bearish_CHoCH_times) - 1; i > 0; --i)
+              {
+               Bearish_CHoCH_times[i] = Bearish_CHoCH_times[i - 1];
+              }
+
+            // Store time value in Bearish_CHoCH_times[0], the first position
+            Bearish_CHoCH_times[0] = rates[1].time;
+
+            lastDirection = -2;
+
+            createObj(rates[indexLastL].time, rates[indexLastL].low, 0, -1, clrRed, "CHoCH");
+            return -2;
+
+
+           }
+        }
+     }
+
+//Swing Detection
+
+   if(rates[2].high > rates[3].high &&
+      rates[2].high > rates[1].high &&
+      rates[2].high > rates[4].high //&&
+//rates[2].high > rates[5].high
+     )
+     {
+      double highvalue = rates[2].high;
+
+      // Store highvalue in highs[]
+
+      // Shift existing elements in highs[] to make space for the new value
+      ArrayResize(highs, ArraySize(highs) + 1);
+      for(int i = ArraySize(highs) - 1; i > 0; --i)
+        {
+         highs[i] = highs[i - 1];
+        }
+
+      // Store highvalue in highs[0], the first position
+      highs[0] = highvalue;
+
+      prevTimeH = lastTimeH;
+      lastTimeH = rates[2].time;
+
+      lastSwingDirection = 1;
+
+      //createObj(rates[2].time, rates[2].high, 234, 1, clrGreen, "");
+     }
+
+   if(rates[2].low < rates[3].low &&
+      rates[2].low < rates[1].low &&
+      rates[2].low < rates[4].low //&&
+//rates[2].low < rates[5].low
+     )
+     {
+      double lowvalue = rates[2].low;
+
+      // Store lowvalue in lows[]
+
+      // Shift existing elements in lows[] to make space for the new value
+      ArrayResize(lows, ArraySize(lows) + 1);
+      for(int i = ArraySize(lows) - 1; i > 0; --i)
+        {
+         lows[i] = lows[i - 1];
+        }
+
+      // Store lowvalue in lowsM5[0], the first position
+      lows[0] = lowvalue;
+
+      prevTimeL = lastTimeL;
+      lastTimeL = rates[2].time;
+
+      lastSwingDirection = -1;
+
+      //createObj(rates[2].time, rates[2].low, 233, -1, clrRed, "");
+     }
+   return 0;
+  }
+//+------------------------------------------------------------------+
+//+------------------------------------------------------------------+
+void createObj(datetime time, double price, int arrowCode, int direction, color clr, string txt)
+  {
+   string objName ="";
+   StringConcatenate(objName, "Signal@", time, "at", DoubleToString(price, _Digits), "(", arrowCode, ")");
+
+   double ask=SymbolInfoDouble(Symbol(), SYMBOL_ASK);
+   double bid=SymbolInfoDouble(Symbol(), SYMBOL_BID);
+   double spread=ask-bid;
+
+   if(direction > 0)
+     {
+      price += 2*spread * _Point;
+     }
+   else
+      if(direction < 0)
+        {
+         price -= 2*spread * _Point;
+        }
+
+   if(ObjectCreate(0, objName, OBJ_ARROW, 0, time, price))
+     {
+      ObjectSetInteger(0, objName, OBJPROP_ARROWCODE, arrowCode);
+      ObjectSetInteger(0, objName, OBJPROP_COLOR, clr);
+      if(direction > 0)
+         ObjectSetInteger(0, objName, OBJPROP_ANCHOR, ANCHOR_TOP);
+      if(direction < 0)
+         ObjectSetInteger(0, objName, OBJPROP_ANCHOR, ANCHOR_BOTTOM);
+     }
+   string objNameDesc = objName + txt;
+   if(ObjectCreate(0, objNameDesc, OBJ_TEXT, 0, time, price))
+     {
+      ObjectSetString(0, objNameDesc, OBJPROP_TEXT, "  " + txt);
+      ObjectSetInteger(0, objNameDesc, OBJPROP_COLOR, clr);
+      if(direction > 0)
+         ObjectSetInteger(0, objNameDesc, OBJPROP_ANCHOR, ANCHOR_TOP);
+      if(direction < 0)
+         ObjectSetInteger(0, objNameDesc, OBJPROP_ANCHOR, ANCHOR_BOTTOM);
+     }
+  }
+
