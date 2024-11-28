@@ -11,6 +11,8 @@
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
+
+
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -578,8 +580,8 @@ class QWENVLM(nn.Module):
         self.linear1=nn.Linear(ndim, ndim*2)
         self.linear2=nn.Linear(ndim, reduced)
         self.layer_norm1=nn.LayerNorm(ndim)
-        self.qwennorm= Qwen2RMSNorm(ndim, eps=config.rms_norm_eps)
-        self.qwennorm2= Qwen2RMSNorm(ndim, eps=config.rms_norm_eps)
+        self.qwennorm= Qwen2RMSNorm(ndim, eps=1e-5)
+       # self.qwennorm2= Qwen2RMSNorm(ndim, eps=config.rms_norm_eps)
         self.layer_norm2=nn.LayerNorm(reduced)
     def forward(self, x):
         normalized=self.lqwennorm(x)
