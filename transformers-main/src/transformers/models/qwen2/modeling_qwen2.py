@@ -584,7 +584,7 @@ class QWENVLM(nn.Module):
        # self.qwennorm2= Qwen2RMSNorm(ndim, eps=config.rms_norm_eps)
         self.layer_norm2=nn.LayerNorm(reduced)
     def forward(self, x):
-        normalized=self.lqwennorm(x)
+        normalized=self.qwennorm(x)
       #  print("passed here", normalized.shape)
         x1=self.linear1(normalized)
         x2=nn.GELU()(x1)
