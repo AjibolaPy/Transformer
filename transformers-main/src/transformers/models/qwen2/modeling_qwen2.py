@@ -1139,8 +1139,9 @@ class Qwen2ForCausalLM(Qwen2PreTrainedModel, GenerationMixin):
     def set_output_embeddings(self, new_embeddings):
         self.lm_head = new_embeddings
 
-    def get_visual_embeddings(self):
-        return self.model.vision_embeddings
+    def get_vision_embeddings(self):
+        return self.model.vision_model
+
 
     def set_decoder(self, decoder):
         self.model = decoder
