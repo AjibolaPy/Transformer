@@ -578,7 +578,7 @@ class QWENVLM(nn.Module):
         """
     #    print(ndim, ndim*2)
         self.linear1=nn.Linear(ndim, ndim*2)
-        self.linear2=nn.Linear(ndim, reduced)
+        self.linear2=nn.Linear(ndim*2, reduced)
         self.layer_norm1=nn.LayerNorm(ndim)
         self.qwennorm= Qwen2RMSNorm(ndim, eps=1e-5)
        # self.qwennorm2= Qwen2RMSNorm(ndim, eps=config.rms_norm_eps)
