@@ -341,6 +341,35 @@ class GPT2Attention(nn.Module):
 
         return outputs  # a, present, (attentions)
 
+class QWENVLM(nn.Module):
+
+    def __init__(self, ndim:int, reduced):
+        super().__init__()
+        """
+        THIS THE FEED FORWARD LAYER FOR DIMENSIONAL REDUCTION USES GLU ACTIVATION.
+        
+        ndim: the initial number of neuroon
+        reduced : the output number of neuron 
+        """
+    #    print(ndim, ndim*2)
+        self.linear1=nn.Linear(ndim, ndim*2)
+        self.linear2=nn.Linear(ndim*2, reduced)
+        self.layer_norm1=nn.LayerNorm(ndim)
+        #self.qwennorm= LayerNorm(ndim)
+       # self.qwennorm2= Qwen2RMSNorm(ndim, eps=config.rms_norm_eps)
+        self.layer_norm2=nn.LayerNorm(reduced)
+    def forward(self, x):
+        normalized=self.layer_norm1(x)
+      #  print("passed here", normalized.shape)
+        x1=self.linear1(normalized)
+        x2=nn.GELU()(x1)
+       # print("After GLU LAYER ", x2.shape)
+        x3=self.linear2(x2)
+        x3=self.layer_norm2(x3)
+       
+       # print("final", x3.shape)
+        return x3
+
 
 class GPT2FlashAttention2(GPT2Attention):
     """
@@ -896,7 +925,7 @@ class GPT2Model(GPT2PreTrainedModel):
         super().__init__(config)
 
         self.embed_dim = config.hidden_size
-
+        self.vision_model=QWENVLM(768, config.hidden_size)
         self.wte = nn.Embedding(config.vocab_size, self.embed_dim)
         self.wpe = nn.Embedding(config.max_position_embeddings, self.embed_dim)
 
@@ -959,7 +988,9 @@ class GPT2Model(GPT2PreTrainedModel):
 
     def get_input_embeddings(self):
         return self.wte
-
+    
+    def get_vision_embeddings(self):
+        return self.vision_model
     def set_input_embeddings(self, new_embeddings):
         self.wte = new_embeddings
 
@@ -1030,6 +1061,10 @@ class GPT2Model(GPT2PreTrainedModel):
             inputs_embeds = self.wte(input_ids)
         position_embeds = self.wpe(position_ids)
         hidden_states = inputs_embeds + position_embeds
+        vision_embeddings = self.vision_model(inputs_embeds[0])
+      # print("embeddings shape", self.embed_tokens(inputs_embeds[1]).squeeze(1).shape)
+        inputs_embeds = torch.cat([vision_embeddings, self.embed_tokens(inputs_embeds[1]).squeeze(1)], dim=1)
+
 
         # Attention mask.
         _use_sdpa = self._attn_implementation == "sdpa" and output_attentions is False and head_mask is None
