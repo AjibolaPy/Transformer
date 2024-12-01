@@ -1029,6 +1029,7 @@ class GPT2Model(GPT2PreTrainedModel):
         )
         use_cache = use_cache if use_cache is not None else self.config.use_cache
         return_dict = return_dict if return_dict is not None else self.config.use_return_dict
+        vision_embeddings = self.vision_model(inputs_embeds[0])
         inputs_embeds = torch.cat([vision_embeddings, self.embed_tokens(inputs_embeds[1]).squeeze(1)], dim=1)
         if input_ids is not None and inputs_embeds is not None:
             raise ValueError("You cannot specify both input_ids and inputs_embeds at the same time")
@@ -1061,7 +1062,7 @@ class GPT2Model(GPT2PreTrainedModel):
             inputs_embeds = self.wte(input_ids)
         position_embeds = self.wpe(position_ids)
         hidden_states = inputs_embeds + position_embeds
-        vision_embeddings = self.vision_model(inputs_embeds[0])
+        
       # print("embeddings shape", self.embed_tokens(inputs_embeds[1]).squeeze(1).shape)
         
 
