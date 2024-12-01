@@ -781,7 +781,8 @@ class GPT2DoubleHeadsModelOutput(ModelOutput):
 
 GPT2_START_DOCSTRING = r"""
 
-    This model inherits from [`PreTrainedModel`]. Check the superclass documentation for the generic methods the
+    This model inherits from [`PreTrainedModel`]. Check the super
+    documentation for the generic methods the
     library implements for all its model (such as downloading or saving, resizing the input embeddings, pruning heads
     etc.)
 
@@ -1272,7 +1273,10 @@ class GPT2LMHeadModel(GPT2PreTrainedModel, GenerationMixin):
 
     def set_output_embeddings(self, new_embeddings):
         self.lm_head = new_embeddings
-
+        
+    def get_vision_embeddings(self):
+        return self.transformer.vision_model
+        
     @add_start_docstrings_to_model_forward(GPT2_INPUTS_DOCSTRING)
     @add_code_sample_docstrings(
         checkpoint=_CHECKPOINT_FOR_DOC,
